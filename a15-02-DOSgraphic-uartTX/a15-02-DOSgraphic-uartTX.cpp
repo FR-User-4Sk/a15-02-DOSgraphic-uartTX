@@ -41,7 +41,6 @@ int main(void)
 	do {
 		printf("---command:");
 		scanf(" %s", chComm);
-		system("cls");
 		//chComm[1] = 1;
 		//chComm[2] = 97;
 		//parity_In = chComm[1];
@@ -61,7 +60,7 @@ int main(void)
 			break;
 		case 'd': // uart : one byte tx
 
-
+			system("cls");
 			parity_In = chComm[1];
 			chText[0] = chComm[2];
 			uart_oneByte_display(hWind, hDC, 10, 100, parity_In, chText[0]);
@@ -72,6 +71,7 @@ int main(void)
 
 
 		case 'e': // uart : multi byte tx
+			system("cls");
 			parity_In = chComm[1];
 			data_cnt_In = (int)chComm[2] - 48;
 			for (i = 0; i < data_cnt_In; i++) {
@@ -174,7 +174,7 @@ int uart_oneByte_display(HWND hWind, HDC hDC, int origin_x, int origin_y, char p
 	}
 	else if (parity == 'e') {
 		
-		if ((data % 2) == 0) {
+		if ((bit_cnt % 2) == 0) {
 			for (i = 0; i < windth_x; i++) {
 				SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y), RGB(0, 0, 235));
 			}
@@ -187,7 +187,7 @@ int uart_oneByte_display(HWND hWind, HDC hDC, int origin_x, int origin_y, char p
 
 	}
 	else if (parity == 'o') {
-		if ((data % 2) == 1) {
+		if ((bit_cnt % 2) == 1) {
 			for (i = 0; i < windth_x; i++) {
 				SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y), RGB(0,0, 235));
 			}
