@@ -40,7 +40,7 @@ int main(void)
 
 	do {/*
 		printf("---command:");
-
+		a
 		scanf(" %s", chComm);
 		*/
 		chComm[1] = 1;
