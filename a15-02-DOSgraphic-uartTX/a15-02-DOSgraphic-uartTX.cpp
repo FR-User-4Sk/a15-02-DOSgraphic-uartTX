@@ -38,18 +38,17 @@ int main(void)
 	hDC = GetDC(hWind);
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-	do {/*
+	do {
 		printf("---command:");
-		a
 		scanf(" %s", chComm);
-		*/
-		chComm[1] = 1;
-		chComm[2] = 1;
-		parity_In = chComm[1];
-		chText[0] = chComm[2];
-		uart_oneByte_display(hWind, hDC, 100, 100, parity_In, chText[0]);
+		system("cls");
+		//chComm[1] = 1;
+		//chComm[2] = 97;
+		//parity_In = chComm[1];
+		//chText[0] = chComm[2];
+		//uart_oneByte_display(hWind, hDC, 10, 100, parity_In, chText[0]);
 
-		/*
+		
 		switch (chComm[0]) {
 		case 'a': // 콘솔 색상 변경(배경:밝은힌색, 전경:어두운검은색)
 			system("color f0");
@@ -61,18 +60,24 @@ int main(void)
 			system("cls");
 			break;
 		case 'd': // uart : one byte tx
+
+
 			parity_In = chComm[1];
 			chText[0] = chComm[2];
-			uart_oneByte_display(hWind, hDC, 100, 100, parity_In, chText[0]);
-			printf("uart data=%c[0x%02x]\n", chText[0], chText[0]);
+			uart_oneByte_display(hWind, hDC, 10, 100, parity_In, chText[0]);
+			printf("uart data=%c[0x%02x:%d:%d]\n", chText[0], chText[0], parity_In, chText[0]);
+
+
 			break;
+
+
 		case 'e': // uart : multi byte tx
 			parity_In = chComm[1];
 			data_cnt_In = (int)chComm[2] - 48;
 			for (i = 0; i < data_cnt_In; i++) {
 				chText[i] = chComm[3 + i];
 			}
-			uart_multiByte_display(hWind, hDC, 100, 100, parity_In, data_cnt_In, chText);
+			uart_multiByte_display(hWind, hDC, 10, 100, parity_In, data_cnt_In, chText);
 			printf("uart data[%d]=", data_cnt_In);
 			for (i = 0; i < data_cnt_In; i++) {
 				printf("%c[0x%02x] ", chText[i], chText[i]);
@@ -82,7 +87,7 @@ int main(void)
 		default:
 			break;
 		}
-		*/
+		
 	} while ('x' != chComm[0]);
 
 	ReleaseDC(hWind, hDC);
@@ -136,7 +141,91 @@ int uart_oneByte_display(HWND hWind, HDC hDC, int origin_x, int origin_y, char p
 	}
 	// parity
 
+
+	
+	
+	/*
+	if ((parity & 1) == 1) {
+		for (i = 0; i < windth_x; i++) {
+			SetPixel(hDC, (base_x + (m * windth_x) + i), base_y, RGB(0, 0, 235));
+		}
+	}
+	else {
+		for (i = 0; i < windth_x; i++) {
+			SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y + windth_y), RGB(0, 0, 235));
+		}
+	}
+	*/
+
+
+
+
+
+
+
+
+
+
+
+	m += 1;
+
+	if (parity == 'n') {
+		m -= 1;
+	}
+	else if (parity == 'e') {
+		
+		if ((data % 2) == 0) {
+			for (i = 0; i < windth_x; i++) {
+				SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y), RGB(0, 0, 235));
+			}
+		}
+		else {
+			for (i = 0; i < windth_x; i++) {
+				SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y + windth_y), RGB(0,0, 235));
+			}
+		}
+
+	}
+	else if (parity == 'o') {
+		if ((data % 2) == 1) {
+			for (i = 0; i < windth_x; i++) {
+				SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y), RGB(0,0, 235));
+			}
+		}
+		else {
+			for (i = 0; i < windth_x; i++) {
+				SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y + windth_y), RGB(0,0, 235));
+			}
+		}
+
+	}
 	//-----------------여기에 코드를 추가하세요.---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// stop
 	m += 1;
@@ -193,6 +282,45 @@ int uart_multiByte_display(HWND hWind, HDC hDC, int origin_x, int origin_y, char
 			m += 1;
 		}
 		// parity
+
+
+		m += 1;
+		if (parity == 'n') {
+			m -= 1;
+		}
+		else if (parity == 'e') {
+
+			if ((data[c] % 2) == 0) {
+				for (i = 0; i < windth_x; i++) {
+					SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y), RGB(0, 0, 235));
+				}
+			}
+			else {
+				for (i = 0; i < windth_x; i++) {
+					SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y + windth_y), RGB(0, 0, 235));
+				}
+			}
+
+		}
+		else if (parity == 'o') {
+			if ((data[c] % 2) == 1) {
+				for (i = 0; i < windth_x; i++) {
+					SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y), RGB(0, 0, 235));
+				}
+			}
+			else {
+				for (i = 0; i < windth_x; i++) {
+					SetPixel(hDC, (base_x + (m * windth_x) + i), (base_y + windth_y), RGB(0, 0, 235));
+				}
+			}
+
+		}
+
+
+
+
+
+
 
 		//-----------------여기에 코드를 추가하세요.---------------------------------------------------
 
