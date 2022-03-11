@@ -47,6 +47,8 @@ int main(void)
 		//chText[0] = chComm[2];
 		//uart_oneByte_display(hWind, hDC, 10, 100, parity_In, chText[0]);
 
+		//new push changed
+
 		
 		switch (chComm[0]) {
 		case 'a': // 콘솔 색상 변경(배경:밝은힌색, 전경:어두운검은색)
